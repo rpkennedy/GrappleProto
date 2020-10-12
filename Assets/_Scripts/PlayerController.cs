@@ -6,16 +6,15 @@ public class PlayerController : MonoBehaviour
 {
     public float speed;
 
-    private Rigidbody rb;
+    private Rigidbody2D rb;
 
     private float movementX;
     private float movementY;
     public bool isGrappled;
 
-    // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
         isGrappled = false;
     }
 

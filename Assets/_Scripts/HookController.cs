@@ -20,7 +20,12 @@ public class HookController : MonoBehaviour
 
     void Update()
     {
-        if((Input.GetMouseButton(0) || Input.GetKeyDown("space")) && anchor.GetComponent<AnchorController>().isTargeted && anchor.GetComponent<AnchorController>().isGrappled == true)
+        if (anchor == null)
+        {
+            Destroy(grapple);
+            return;
+        }
+            if ((Input.GetMouseButton(0) || Input.GetKeyDown("space")) && anchor.GetComponent<AnchorController>().isTargeted && anchor.GetComponent<AnchorController>().isGrappled == true)
         {
             Destroy(grapple);
             anchor.GetComponent<AnchorController>().isGrappled = false;
@@ -40,6 +45,6 @@ public class HookController : MonoBehaviour
                 anchor.GetComponent<AnchorController>().isGrappled = false;
             }
         }
-        if (anchor == null) Destroy(grapple);
+        
     }
 }
