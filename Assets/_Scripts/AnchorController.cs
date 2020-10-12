@@ -29,12 +29,14 @@ public class AnchorController : MonoBehaviour
         Instantiate(target, this.transform);
 
         isTargeted = true;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<HookController>().Anchor = this.gameObject;
     }
 
     void OnMouseExit()
     {
         Destroy(GameObject.FindGameObjectWithTag("Target"));
         isTargeted = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<HookController>().Anchor = null;
     }
 
     void Update()
