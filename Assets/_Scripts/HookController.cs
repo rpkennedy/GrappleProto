@@ -31,7 +31,7 @@ public class HookController : MonoBehaviour
             {
                 Vector2 destiny = anchor.GetComponent<AnchorController>().transform.position;
                 grapple = (GameObject)Instantiate(grapplePrefab, transform.position, Quaternion.identity);
-                //grapple.GetComponent<RopeController>().destiny = destiny;
+                grapple.GetComponent<RopeController>().destiny = destiny;
                 anchor.GetComponent<AnchorController>().isGrappled = true;                
             }
             else
