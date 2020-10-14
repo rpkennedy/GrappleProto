@@ -25,12 +25,14 @@ public class HookController : MonoBehaviour
             Destroy(grapple);
             return;
         }
-            if ((Input.GetMouseButton(0) || Input.GetKeyDown("space")) && anchor.GetComponent<AnchorController>().isTargeted && anchor.GetComponent<AnchorController>().isGrappled == true)
+
+
+        if (Input.GetMouseButtonDown(0) && anchor.GetComponent<AnchorController>().isTargeted && anchor.GetComponent<AnchorController>().isGrappled)
         {
             Destroy(grapple);
             anchor.GetComponent<AnchorController>().isGrappled = false;
         }
-        if((Input.GetMouseButton(0) || Input.GetKeyDown("space")) && anchor.GetComponent<AnchorController>().isTargeted)
+        if(Input.GetMouseButtonDown(0) && anchor.GetComponent<AnchorController>().isTargeted)
         {
             if (anchor.GetComponent<AnchorController>().isGrappled == false)
             {

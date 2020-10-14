@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 2717958269441636733}
   - component: {fileID: 2717958269441636731}
   - component: {fileID: 2717958269441636730}
-  m_Layer: 0
+  - component: {fileID: 534046052}
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -119,6 +120,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  jumpForce: 2
+  ground: {fileID: 0}
   isGrappled: 0
 --- !u!114 &2717958269441636730
 MonoBehaviour:
@@ -134,3 +137,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grapplePrefab: {fileID: 5675373364838781289, guid: 667688c57356c1c4bbdb422befba5e2c,
     type: 3}
+--- !u!58 &534046052
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2717958269441636729}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.095
