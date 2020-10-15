@@ -26,26 +26,34 @@ public class HookController : MonoBehaviour
             return;
         }
 
-
-        if (Input.GetMouseButtonDown(0) && anchor.GetComponent<AnchorController>().isTargeted && anchor.GetComponent<AnchorController>().isGrappled)
+        if (grapple != null)
+        {
+            if (anchor.GetComponent<AnchorController>().transform.position == grapple.transform.position)
+            {
+                anchor.GetComponent<AnchorController>().isGrappled = true;
+            }
+        }
+        
+        
+        if (Input.GetMouseButtonDown(0) && anchor.GetComponent<AnchorController>().isGrappled)
         {
             Destroy(grapple);
             anchor.GetComponent<AnchorController>().isGrappled = false;
         }
+
         if(Input.GetMouseButtonDown(0) && anchor.GetComponent<AnchorController>().isTargeted)
         {
             if (anchor.GetComponent<AnchorController>().isGrappled == false)
             {
                 Vector2 destiny = anchor.GetComponent<AnchorController>().transform.position;
                 grapple = (GameObject)Instantiate(grapplePrefab, transform.position, Quaternion.identity);
-                grapple.GetComponent<RopeController>().destiny = destiny;
-                anchor.GetComponent<AnchorController>().isGrappled = true;                
+                grapple.GetComponent<RopeController>().destiny = destiny;                                
             }
             else
             {
                 Destroy(grapple);
                 anchor.GetComponent<AnchorController>().isGrappled = false;
-            }
+           }
         }
         
     }

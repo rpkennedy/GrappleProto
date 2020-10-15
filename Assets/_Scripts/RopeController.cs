@@ -8,13 +8,12 @@ public class RopeController : MonoBehaviour
 
     public Vector2 destiny;
 
-    public float speed = 1;
+    public float speed;
     public float distance = 2;
     public GameObject nodePrefab;
     public GameObject player;
     public GameObject lastNode;
     public LineRenderer lr;
-    public GameObject playerNode;
 
     int vertexCount = 2;
     public List<GameObject> Nodes = new List<GameObject>();
@@ -22,7 +21,6 @@ public class RopeController : MonoBehaviour
 
     void Start()
     {
-        playerNode = GameObject.FindGameObjectWithTag("pNode");
         lr = GetComponent<LineRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         lastNode = transform.gameObject;
@@ -32,11 +30,11 @@ public class RopeController : MonoBehaviour
     void Update()
     {
         transform.position = Vector2.MoveTowards(transform.position, destiny, speed);
-
-        if ((Vector2)transform.position != destiny)
+        //rope construction
+        if ((Vector2)transform.position != destiny) //haven't arrived yet
         {
             if (Vector2.Distance(player.transform.position, lastNode.transform.position) > distance)
-            {
+            { //if dist from last node to player is greater than spec. val:
                 CreateNode();
             }
         }
@@ -49,52 +47,40 @@ public class RopeController : MonoBehaviour
                 CreateNode();
             }
             lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+        }       //connect player to hinge rope
+
+
+
+        //climb pt1
+        if (player.GetComponent<PlayerController>().isClimbing) //player moves to last node while climbing bool true
+        {
+            player.transform.position = Vector2.MoveTowards(player.transform.position, Nodes[Nodes.Count - 1].transform.position, 0.05f);
         }
-
-        /*
-                GameObject nnode = (GameObject)Instantiate(nodePrefab, player.transform.position, Quaternion.identity);
-                Debug.Log("Should be");
-
-                
-                lastNode = Nodes[Nodes.Count - 1];
-                
-                
-                lastNode.GetComponent<HingeJoint2D>().connectedBody = nnode.GetComponent<Rigidbody2D>();
-                lastNode = nnode;
-                Nodes.Add(lastNode);
-
-                vertexCount++; */
-        //move pNode to Node[Count]
-        //switch Node[Count] to pNode
-        //delete old node
-
-        
-        if (Vector2.Distance(player.transform.position, Nodes[Nodes.Count - 1].transform.position) <= 0.1f)
+        //climb pt2
+        if (Vector2.Distance(player.transform.position, Nodes[Nodes.Count - 1].transform.position) <= 0.1f) //if player gets too close to node
         {
             Nodes[Nodes.Count-2].GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
-            Destroy(Nodes[Nodes.Count - 1]);
-            Nodes.RemoveAt(Nodes.Count - 1);
-            vertexCount--;
+            Destroy(Nodes[Nodes.Count - 1]);    //connect hinge rope from player to node behind last
+            Nodes.RemoveAt(Nodes.Count - 1);    //destroy and remove last node
+            vertexCount--;                      //take point out of line renderer
         }
         
-        if (player.GetComponent<PlayerController>().isClimbing)
-        {
-            player.transform.position = Vector2.MoveTowards(player.transform.position, Nodes[Nodes.Count-1].transform.position, 0.05f);
-        }
+        
         RenderLine();
     }
 
     void FixedUpdate()
     {
+        //descending
         if (player.GetComponent<PlayerController>().isDescending)
         {
             Vector2 anchor = player.GetComponent<HookController>().Anchor.gameObject.transform.position;
             Vector2 node = Nodes[Nodes.Count - 1].transform.position;
-            player.transform.position = Vector2.MoveTowards(player.transform.position, -anchor, 0.1f);
+            player.transform.position = Vector2.MoveTowards(player.transform.position, -anchor, 0.1f); //move away from the anchor
 
-            if (Vector2.Distance(player.transform.position, node) > distance)
+            if (Vector2.Distance(player.transform.position, node) > distance) //if dist from player to last node is > spec val
             {
-                CreateNode();
+                CreateNode();       //create a node and connect it to hinge rope
                 lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
             }
         }
@@ -102,22 +88,22 @@ public class RopeController : MonoBehaviour
 
     void RenderLine()
     {
-        lr.positionCount = vertexCount;
+        lr.positionCount = vertexCount;     //points = number of nodes
 
         int i;
         for (i = 0; i < Nodes.Count; i++)
         {
-            lr.SetPosition(i, Nodes[i].transform.position);
+            lr.SetPosition(i, Nodes[i].transform.position); //set points to node values
         }
-        lr.SetPosition(i, player.transform.position);
+        lr.SetPosition(i, player.transform.position); //last point is player not a node
     }
 
     void CreateNode()
     {
         lastNode = Nodes[Nodes.Count - 1];
-        Vector2 pos2Create = player.transform.position - lastNode.transform.position;
-        pos2Create.Normalize();
-        pos2Create *= distance;
+        Vector2 pos2Create = player.transform.position - lastNode.transform.position;   
+        pos2Create.Normalize();             //find direction from player to node
+        pos2Create *= distance;             //change pos to spec. val away in direction
         pos2Create += (Vector2)lastNode.transform.position;
 
         GameObject go = (GameObject)Instantiate(nodePrefab, pos2Create, Quaternion.identity);
@@ -125,9 +111,9 @@ public class RopeController : MonoBehaviour
         go.transform.SetParent(transform);
 
         lastNode.GetComponent<HingeJoint2D>().connectedBody = go.GetComponent<Rigidbody2D>();
-        lastNode = go;
-        Nodes.Add(lastNode);
+        lastNode = go;                      //connect to hinge rope, switch new node to last node
+        Nodes.Add(lastNode);                //add last (new) node to list
 
-        vertexCount++;
+        vertexCount++;              //for the line renderer
     }
 }

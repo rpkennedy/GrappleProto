@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         movementX = Input.GetAxis("Horizontal");
-        if (hook.grapple != null)
+        if (hook.grapple != null)                       //if we have a rope
         {
             if (Input.GetKey("w"))
             {
@@ -56,13 +56,14 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 movement = new Vector3(movementX, 0f, 0f);
-        rb.AddForce(movement * speed);
+        Vector3 movement = new Vector3(movementX, 0f, 0f);      //L - R move
+        rb.AddForce(movement * speed);                          
 
-        if (isJumping)
+        if (isJumping)                                          //jump
         {
             rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             isJumping = false;
         }        
+                    //climb / descend is in RopeController bc reasons --apologies future self--
     }
 }
