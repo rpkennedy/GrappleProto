@@ -254,8 +254,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isTargeted: 0
   isGrappled: 0
-  isModded: 0
-  coll: {fileID: 0}
+  isBuffed: 0
+  isDebuffed: 0
+  core: {fileID: 6160742041202258427}
   targetPrefab: {fileID: 1501801883166674408, guid: 5df51957db8432541ad7aff6b13d7e3b,
     type: 3}
 --- !u!1 &6160742041202258427

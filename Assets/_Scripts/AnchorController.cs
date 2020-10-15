@@ -6,7 +6,9 @@ public class AnchorController : MonoBehaviour
 {
     public bool isTargeted;
     public bool isGrappled;
-    public bool isModded;
+    public bool isBuffed;
+    public bool isDebuffed;
+    public GameObject core;
 
     public GameObject targetPrefab;
     GameObject target;
@@ -15,10 +17,11 @@ public class AnchorController : MonoBehaviour
     {
         target = targetPrefab;
         target.transform.position = Vector3.zero;
-
+        
         isTargeted = false;
         isGrappled = false;
-        isModded = false;
+        isBuffed = false;
+        isDebuffed = false;
         
         target.transform.Translate(1.44f, 0, 0);
     }
@@ -41,6 +44,21 @@ public class AnchorController : MonoBehaviour
 
     void Update()
     {
-        
+        if (isBuffed)
+        {
+            
+        }
+        else if (isDebuffed)
+        {
+            
+        }
+        else
+        {
+            
+        }
+    }
+    public void changeMat(Material mat)
+    {
+        core.gameObject.GetComponent<Renderer>().material = mat;        
     }
 }
