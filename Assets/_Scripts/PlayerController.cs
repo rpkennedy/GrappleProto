@@ -10,14 +10,21 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private CircleCollider2D coll;
     public BoxCollider2D ground;
+    public HookController hook;
+    public RopeController rope;
 
     private float movementX;
-    private float movementY;
+
+    public bool isClimbing;
+    public bool isDescending;
     private bool isJumping;
     public bool isGrappled;
+    GameObject node;
 
     void Start()
-    {
+    {        
+        hook = GetComponent<HookController>();
+        rope = hook.GetComponent<RopeController>();
         coll = GetComponent<CircleCollider2D>();
         ground = GameObject.FindGameObjectWithTag("Ground").GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
@@ -27,7 +34,21 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         movementX = Input.GetAxis("Horizontal");
-        if (isGrappled) movementY = Input.GetAxis("Vertical");
+        if (hook.grapple != null)
+        {
+            if (Input.GetKey("w"))
+            {
+                isClimbing = true;
+                isDescending = false;
+            }
+            else isClimbing = false;
+            if (Input.GetKey("s"))
+            {
+                isDescending = true;
+                isClimbing = false;
+            }
+            else isDescending = false;
+        } 
 
         
         if (Input.GetKeyDown("space") && coll.IsTouching(ground)) isJumping = true;
@@ -35,10 +56,13 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 movement = new Vector3(movementX, movementY, 0.0f);
+        Vector3 movement = new Vector3(movementX, 0f, 0f);
         rb.AddForce(movement * speed);
 
-        
+        if (isJumping)
+        {
+            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            isJumping = false;
+        }        
     }
-
 }

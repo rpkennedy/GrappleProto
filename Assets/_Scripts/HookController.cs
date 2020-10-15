@@ -6,7 +6,7 @@ public class HookController : MonoBehaviour
 {
     public GameObject grapplePrefab;
     private GameObject anchor;
-    GameObject grapple;
+    public GameObject grapple;
 
     void Start()
     {
