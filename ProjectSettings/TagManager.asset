@@ -8,6 +8,8 @@ TagManager:
   - Target
   - Ground
   - pNode
+  - BuffLight
+  - DebuffLight
   layers:
   - Default
   - TransparentFX

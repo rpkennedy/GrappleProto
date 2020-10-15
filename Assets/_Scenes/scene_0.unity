@@ -500,8 +500,12 @@ MonoBehaviour:
   anchors: []
   buffAnchor: {fileID: 0}
   buff: {fileID: 0}
+  debuffAnchor: {fileID: 0}
+  debuff: {fileID: 0}
+  dbLight: {fileID: 6012296290617738016, guid: 5b71563b9adb55544b6ba3948bd7de6f, type: 3}
+  bLight: {fileID: 6012296290617738016, guid: 5a40da0ffbdc7e3429cb5b3ae3192616, type: 3}
   buffTimer: 3
-  debuffTimer: 3
+  debuffTimer: 5
 --- !u!1001 &1073674132
 PrefabInstance:
   m_ObjectHideFlags: 0

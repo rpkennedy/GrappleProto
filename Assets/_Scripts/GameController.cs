@@ -23,10 +23,14 @@ public class GameController : MonoBehaviour
     private GameObject b;
     GameObject[] bList;
     GameObject[] dbList;
+    private bool buffing;
+    private bool debuffing;
 
     [Header("This is you")]
     public float buffTimer;
     public float debuffTimer;
+    float timer0 = 0;
+    float timer1 = 0;
 
     void Start()
     {
@@ -35,7 +39,7 @@ public class GameController : MonoBehaviour
         Debuff();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         bList = GameObject.FindGameObjectsWithTag("BuffLight");
         if (bList.Length > 1) Destroy(bList[0]);
@@ -43,27 +47,48 @@ public class GameController : MonoBehaviour
         dbList = GameObject.FindGameObjectsWithTag("DebuffLight");
         if (dbList.Length > 1) Destroy(dbList[0]);
 
+
+        if (buffing)
+        {            
+            timer0 += Time.deltaTime;
+            if(timer0 > buffTimer)
+            {
+                BuffOutro();
+            }
+        }
+
+        if (debuffing)
+        {
+            timer1 += Time.deltaTime;
+            if (timer1 > debuffTimer)
+            {
+                DebuffOutro();
+            }
+        }
     }
     public void Buff()
     {
+        buffing = true;
+        
         buffAnchor = anchors[(int)Random.Range(0, anchors.Length)];
         buff = buffAnchor.GetComponent<AnchorController>();
         if (buff.isDebuffed) BuffCut();
         buff.isBuffed = true;
         buff.changeMat(buffMat);
         b = (GameObject)Instantiate(bLight, buffAnchor.transform);
-        Invoke("BuffOutro", buffTimer);
+       // Invoke("BuffOutro", buffTimer);
     }
 
     public void Debuff()
     {
+        debuffing = true;
+
         debuffAnchor = anchors[(int)Random.Range(0, anchors.Length)];
         debuff = debuffAnchor.GetComponent<AnchorController>();
         if (debuff.isBuffed) DebuffCut();
         debuff.isDebuffed = true;
         debuff.changeMat(debuffMat);
-        Instantiate(dbLight, debuffAnchor.transform);        
-        Invoke("DebuffOutro", debuffTimer);
+        db = (GameObject)Instantiate(dbLight, debuffAnchor.transform);  
     }
 
     public void BuffCut()
@@ -82,6 +107,9 @@ public class GameController : MonoBehaviour
 
     public void DebuffOutro()
     {
+        timer1 = 0;
+        debuffing = false;
+
         Destroy(GameObject.FindGameObjectWithTag("DebuffLight"));
         debuff.isDebuffed = false;
         debuff.changeMat(defaultMat);
@@ -93,6 +121,8 @@ public class GameController : MonoBehaviour
 
     public void BuffOutro()
     {
+        timer0 = 0;
+        buffing = false;
         buff.isBuffed = false;
         buff.changeMat(defaultMat);
         Destroy(b);
